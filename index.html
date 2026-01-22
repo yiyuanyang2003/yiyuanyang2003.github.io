@@ -24,7 +24,7 @@
         .btn-submit:disabled { background: #ccc; box-shadow: none; }
         .success-screen { text-align: center; margin-top: 60px; }
         .header-banner {
-            /* 1. 设置背景图片 (确保路径对了) */
+            /* 1. 设置背景图片 */
             background-image: url('./images/banner.jpg');
             /* 2. 让图片铺满整个区域，且不变形 */
             background-size: cover;
@@ -91,7 +91,7 @@
     <div id="app">
         <div class="header-banner">
         <h1>CandY's Restaurant</h1>
-        <p>欢迎光临，很高兴为你服务 🍬</p>
+        <p>欢迎光临，很高兴为你服务！</p>
     </div>
         <div v-if="!submitted">
             <h2 style="margin-bottom: 20px;">请选择菜品</h2>
@@ -143,22 +143,24 @@
                         {
                             name: "🔥 必点热菜",
                             dishes: [
-                                { id: 1, name: '红烧肉', count: 0 },
-                                { id: 2, name: '清蒸鲈鱼', count: 0 }
+                                { id: 1, name: '萝卜烧牛肉', count: 0 },
+                                { id: 2, name: '蒜苗回锅肉', count: 0 },
+                                { id: 3, name: '玉子豆腐', count: 0 }
                             ]
                         },
                         {
                             name: "🥗 清爽凉菜",
                             dishes: [
-                                { id: 3, name: '拍黄瓜', count: 0 },
-                                { id: 4, name: '皮蛋豆腐', count: 0 }
+                                { id: 4, name: '蒜泥拍黄瓜', count: 0 },
+                                { id: 5, name: '凉拌折耳根', count: 0 }
                             ]
                         },
                         {
                             name: "🥤 酒水饮料",
                             dishes: [
-                                { id: 5, name: '米饭', count: 0 },
-                                { id: 6, name: '冰可乐', count: 0 }
+                                { id: 6, name: '科罗娜', count: 0 },
+                                { id: 7, name: '黄油皮尔森', count: 0 },
+                                { id: 8, name: '可乐', count: 0 }
                             ]
                         }
                     ]
