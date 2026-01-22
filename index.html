@@ -48,6 +48,14 @@
         font-size: 14px;
         opacity: 0.9;
     }
+    .category-title {
+            margin: 25px 0 10px 5px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            border-left: 5px solid #ff9a9e; /* 左侧粉色竖条 */
+            padding-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -59,14 +67,19 @@
         <div v-if="!submitted">
             <h2 style="margin-bottom: 20px;">请选择菜品</h2>
             
-            <div class="dish-card" v-for="dish in menu" :key="dish.id">
-                <div class="dish-info">
-                    <h3>{{ dish.name }}</h3>
-                </div>
-                <div class="counter">
-                    <button class="btn btn-minus" @click="dish.count > 0 ? dish.count-- : 0" v-show="dish.count > 0">-</button>
-                    <span class="count-num" v-show="dish.count > 0">{{ dish.count }}</span>
-                    <button class="btn btn-plus" @click="dish.count++">+</button>
+            <div v-for="category in categories" :key="category.name">
+                
+                <h3 class="category-title">{{ category.name }}</h3>
+
+                <div class="dish-card" v-for="dish in category.dishes" :key="dish.id">
+                    <div class="dish-info">
+                        <h3>{{ dish.name }}</h3>
+                    </div>
+                    <div class="counter">
+                        <button class="btn btn-minus" @click="dish.count > 0 ? dish.count-- : 0" v-show="dish.count > 0">-</button>
+                        <span class="count-num" v-show="dish.count > 0">{{ dish.count }}</span>
+                        <button class="btn btn-plus" @click="dish.count++">+</button>
+                    </div>
                 </div>
             </div>
 
@@ -96,29 +109,52 @@
             data() {
                 return {
                     submitted: false,
-                    // 👇👇👇【请在这里修改你的菜单】👇👇👇
-                    menu: [
-                        { id: 1, name: '红烧肉', count: 0 },
-                        { id: 2, name: '清蒸鲈鱼', count: 0 },
-                        { id: 3, name: '米饭', count: 0 },
-                        { id: 4, name: '冰可乐', count: 0 }
+                    // 👇 改用 categories 结构
+                    categories: [
+                        {
+                            name: "🔥 必点热菜",
+                            dishes: [
+                                { id: 1, name: '红烧肉', count: 0 },
+                                { id: 2, name: '清蒸鲈鱼', count: 0 }
+                            ]
+                        },
+                        {
+                            name: "🥗 清爽凉菜",
+                            dishes: [
+                                { id: 3, name: '拍黄瓜', count: 0 },
+                                { id: 4, name: '皮蛋豆腐', count: 0 }
+                            ]
+                        },
+                        {
+                            name: "🥤 酒水饮料",
+                            dishes: [
+                                { id: 5, name: '米饭', count: 0 },
+                                { id: 6, name: '冰可乐', count: 0 }
+                            ]
+                        }
                     ]
                 }
             },
             computed: {
+                // 👇 辅助函数：把所有分类里的菜“拍扁”成一个大数组，方便后续计算
+                allDishes() {
+                    return this.categories.flatMap(cat => cat.dishes)
+                },
+                // 👇 计算总数 (现在基于 allDishes 计算)
                 totalCount() {
-                    return this.menu.reduce((sum, dish) => sum + dish.count, 0)
+                    return this.allDishes.reduce((sum, dish) => sum + dish.count, 0)
                 }
             },
             methods: {
                 async submitOrder() {
                     if(this.totalCount === 0) return;
                     
-                    // 1. 过滤出点了的菜
-                    const orderContent = this.menu.filter(d => d.count > 0)
+                    // 1. 过滤出点了的菜 (使用 allDishes)
+                    const orderContent = this.allDishes
+                        .filter(d => d.count > 0)
                         .map(d => ({ name: d.name, count: d.count }))
 
-                    // 2. 写入 Supabase (使用 config.js 里的 _supabase 变量)
+                    // 2. 写入 Supabase (代码不变)
                     const { error } = await _supabase
                         .from('orders')
                         .insert({ 
