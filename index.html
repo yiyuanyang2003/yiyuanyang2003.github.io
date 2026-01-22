@@ -24,30 +24,59 @@
         .btn-submit:disabled { background: #ccc; box-shadow: none; }
         .success-screen { text-align: center; margin-top: 60px; }
         .header-banner {
-        /* 背景色：用了一个温馨的粉橙色渐变 */
-        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
-        padding: 40px 20px;
-        text-align: center;
-        border-radius: 0 0 25px 25px; /* 下方两个圆角，看起来像 App 头部 */
-        box-shadow: 0 5px 15px rgba(255, 154, 158, 0.3); /* 柔和的阴影 */
-        margin-bottom: 25px;
-        color: white;
-    }
+            /* 1. 设置背景图片 (确保路径对了) */
+            background-image: url('./images/banner.jpg');
+            /* 2. 让图片铺满整个区域，且不变形 */
+            background-size: cover;
+            /* 3. 图片居中显示 */
+            background-position: center center;
+            
+            /* 增加高度，让画面显示更多 */
+            padding: 80px 20px; 
+            text-align: center;
+            /* 保持下方的圆角 */
+            border-radius: 0 0 25px 25px;
+            margin-bottom: 25px;
+            /* 关键：为遮罩层定位做准备 */
+            position: relative;
+            /* 确保遮罩层也遵循圆角 */
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
 
-    .header-banner h1 {
-        margin: 0;
-        font-size: 28px;
-        font-weight: 800; /* 加粗 */
-        letter-spacing: 1px; /* 字母间距 */
-        text-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 文字阴影，更有立体感 */
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
+        /* --- 新增：一个半透明黑色遮罩层，让文字更清楚 --- */
+        .header-banner::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            /* 黑色半透明，0.3 可以改成 0.1(更亮) 到 0.7(更暗) */
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1; /* 放在背景图上面 */
+        }
 
-    .header-banner p {
-        margin-top: 8px;
-        font-size: 14px;
-        opacity: 0.9;
-    }
+        /* 确保文字显示在遮罩层上面 */
+        .header-banner h1, .header-banner p {
+            position: relative;
+            z-index: 2; /* 放在最上层 */
+            color: white; /* 文字一定要白色 */
+        }
+
+        .header-banner h1 {
+            margin: 0;
+            font-size: 32px; /* 字体稍微大一点 */
+            font-weight: 800;
+            letter-spacing: 1px;
+            /* 加重文字阴影，提升立体感 */
+            text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+        }
+
+        .header-banner p {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+            opacity: 1;
+        }
     .category-title {
             margin: 25px 0 10px 5px;
             font-size: 18px;
